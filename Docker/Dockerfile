@@ -8,7 +8,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Shanghai
 
 # 设置工作目录为 /Yunzai
-# WORKDIR /Yunzai
+WORKDIR /Yunzai
 
 # 替换软件源为阿里云，加速软件包下载
 RUN sed -i 's@/archive.ubuntu.com/@/mirrors.aliyun.com/@g' /etc/apt/sources.list && \
