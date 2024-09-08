@@ -10,4 +10,4 @@
      
 ### 使用代理或 CDN 加速地址，适用于不能访问 Github 但想要使用 Github 图标源的用户。
 
-   - 纳西妲（图片尺寸为`1024×1024`）：`https://ghproxy.com/raw.githubusercontent.com/loveliveao/Unraid_Trss/main/icons/Langrange/Nahida.png`
+   - 纳西妲（图片尺寸为`1024×1024`）：`https://ghproxy.com/raw.githubusercontent.com/loveliveao/Unraid_Trss/main/icons/Yunzai/Nahida.png`
