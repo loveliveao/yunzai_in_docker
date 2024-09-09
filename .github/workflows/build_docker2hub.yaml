@@ -39,5 +39,5 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.REPOSITORY_NAME_PART }}:${{ github.event.release.name }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.REPOSITORY_NAME_PART }}:latest
+            loveliveao/${{ env.REPOSITORY_NAME_PART }}:${{ github.event.release.name }}
+            loveliveao/${{ env.REPOSITORY_NAME_PART }}:latest
