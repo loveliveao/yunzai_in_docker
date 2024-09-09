@@ -1,8 +1,10 @@
 name: build_docker
 
 on:
+  push:
+    branches: [ main ]  # 你可以指定特定的分支，或者使用 '*' 来表示所有分支
   release:
-    types: [created] # 表示在创建新的 Release 时触发
+    types: [created]
 
 jobs:
   build_docker:
@@ -29,6 +31,15 @@ jobs:
           # 从 GITHUB_REPOSITORY 环境变量中提取仓库名称部分
           REPOSITORY_NAME_PART=$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2)
           echo "REPOSITORY_NAME_PART=$REPOSITORY_NAME_PART" >> $GITHUB_ENV
+
+      - name: Print environment variables
+        run: |
+          echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
+          echo "REPOSITORY_NAME_PART: $REPOSITORY_NAME_PART"
+          echo "GITHUB_REF: $GITHUB_REF"
+          echo "GITHUB_SHA: $GITHUB_SHA"
+          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
+          echo "GITHUB_RUN_ID: $GITHUB_RUN_ID"
 
       - name: Build and push
         id: docker_build
