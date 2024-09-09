@@ -31,7 +31,7 @@ RUN npm --registry=https://registry.npmmirror.com install pnpm -g && \
     pnpm config set registry https://registry.npmmirror.com
 
 # 复制启动脚本到容器
-COPY ./Docker/start.sh /
+COPY ./start.sh /
 
 # 暴露端口
 EXPOSE 2536/tcp
