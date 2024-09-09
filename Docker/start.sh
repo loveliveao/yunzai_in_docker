@@ -16,7 +16,7 @@ if [ ! -d "/Yunzai" ] || [ -z "$(ls -A /Yunzai)" ]; then
     pnpm config set registry https://registry.npmmirror.com
     pnpm install -P
 else
-    echo "Yunzai 目录存在且不为空，直接启动 Yunzai..."
+    echo "Yunzai 目录存在且不为空，直接启动 Yunzai...."
     cd /Yunzai
 fi
 
