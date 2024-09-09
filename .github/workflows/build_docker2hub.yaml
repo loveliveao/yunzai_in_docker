@@ -26,6 +26,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set up environment variables
+        run: |
+          # 从 GITHUB_REPOSITORY 环境变量中提取仓库名称部分
+          REPOSITORY_NAME_PART=$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2)
+          echo "REPOSITORY_NAME_PART=$REPOSITORY_NAME_PART" >> $GITHUB_ENV
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4
@@ -35,5 +41,5 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/yunzai_in_unraid:${{ github.ref_name }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/yunzai_in_unraid:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.REPOSITORY_NAME_PART }}:${{ github.ref_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.REPOSITORY_NAME_PART }}:latest
