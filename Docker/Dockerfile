@@ -10,12 +10,12 @@ ENV TZ=Asia/Shanghai
 # 设置工作目录为 /Yunzai
 WORKDIR /Yunzai
 
-# 替换软件源为阿里云，加速软件包下载
+# 替换软件源为阿里云，加速软件包下载，并安装必要的软件包
 RUN sed -i 's@/archive.ubuntu.com/@/mirrors.aliyun.com/@g' /etc/apt/sources.list && \
     sed -i 's@/security.ubuntu.com/@/mirrors.aliyun.com/@g' /etc/apt/sources.list && \
     apt-get update -y && \
     apt-get install -y curl git redis-server chromium-browser language-pack-zh-hans \
-    libgtk-3-0 libasound2 libgbm1 libnss3 ffmpeg
+    libgtk-3-0 libasound2 libgbm1 libnss3 ffmpeg vim python3 python3-pip
 
 # 设置中文环境
 RUN echo -e "LANG=\"zh_CN.UTF-8\"\nLANGUAGE=\"zh_CN:zh\"\nLC_NUMERIC=\"zh_CN\"\nLC_TIME=\"zh_CN\"\nLC_MONETARY=\"zh_CN\"\nLC_PAPER=\"zh_CN\"\nLC_NAME=\"zh_CN\"\nLC_ADDRESS=\"zh_CN\"\nLC_TELEPHONE=\"zh_CN\"\nLC_MEASUREMENT=\"zh_CN\"\nLC_IDENTIFICATION=\"zh_CN\"\nLC_ALL=\"zh_CN.UTF-8\"" > /etc/default/locale && \
@@ -35,7 +35,6 @@ COPY ./start.sh /
 
 # 暴露端口
 EXPOSE 2536/tcp
-EXPOSE 50831/tcp
 
 # 指定容器启动时执行的命令
 CMD ["/bin/bash", "/start.sh"]
