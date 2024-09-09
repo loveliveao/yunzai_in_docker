@@ -30,12 +30,16 @@ jobs:
         run: |
           # 从 GITHUB_REPOSITORY 环境变量中提取仓库名称部分
           REPOSITORY_NAME_PART=$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2)
+          # 生成日期时间字符串，格式为 YYMMDDHHMM
+          BUILD_TAG=$(date +'%y%m%d%H%M')
           echo "REPOSITORY_NAME_PART=$REPOSITORY_NAME_PART" >> $GITHUB_ENV
+          echo "BUILD_TAG=$BUILD_TAG" >> $GITHUB_ENV
 
       - name: Print environment variables
         run: |
           echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
           echo "REPOSITORY_NAME_PART: $REPOSITORY_NAME_PART"
+          echo "BUILD_TAG: $BUILD_TAG"
           echo "GITHUB_REF: $GITHUB_REF"
           echo "GITHUB_SHA: $GITHUB_SHA"
           echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
@@ -50,5 +54,5 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            loveliveao/trss_in_unraid:${{ github.sha }}
-            loveliveao/trss_in_unraid:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/yunzai_in_unraid:${{ env.BUILD_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/yunzai_in_unraid:latest
