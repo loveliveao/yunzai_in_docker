@@ -1,27 +1,32 @@
-# 使用 Ubuntu 20.04 作为基础镜像
-FROM ubuntu:20.04
+# 使用 Debian 作为基础镜像
+FROM debian:bullseye-slim
 
-# 设置非交互式安装，避免安装过程中出现交互式提示
+# 设置非交互式安装
 ARG DEBIAN_FRONTEND=noninteractive
 
 # 设置时区为中国上海
 ENV TZ=Asia/Shanghai
+# 设置 Puppeteer 环境变量
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # 设置工作目录为 /Yunzai
 WORKDIR /Yunzai
 
-# 替换软件源为阿里云，加速软件包下载，并安装必要的软件包
-RUN sed -i 's@/archive.ubuntu.com/@/mirrors.aliyun.com/@g' /etc/apt/sources.list && \
-    sed -i 's@/security.ubuntu.com/@/mirrors.aliyun.com/@g' /etc/apt/sources.list && \
+# 替换软件源为阿里云并安装基础依赖
+RUN sed -i 's@http://deb.debian.org/@http://mirrors.aliyun.com/@g' /etc/apt/sources.list && \
+    sed -i 's@http://security.debian.org/@http://mirrors.aliyun.com/@g' /etc/apt/sources.list && \
     apt-get update -y && \
-    apt-get install -y curl git redis-server chromium-browser language-pack-zh-hans \
-    libgtk-3-0 libasound2 libgbm1 libnss3 ffmpeg vim python3 python3-pip \
-    ca-certificates fonts-liberation libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 \
-    libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libglib2.0-0 libnspr4 \
-    libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 \
-    libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 \
-    libxrender1 libxss1 libxtst6 lsb-release wget xdg-utils
-    
+    apt-get install -y --no-install-recommends wget xz-utils dos2unix curl gnupg git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# 安装其他依赖
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends fonts-wqy-microhei xfonts-utils chromium fontconfig libxss1 libgl1 vim jq python3-pip python3-dev redis-server procps && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # 设置中文环境
 RUN echo -e "LANG=\"zh_CN.UTF-8\"\nLANGUAGE=\"zh_CN:zh\"\nLC_NUMERIC=\"zh_CN\"\nLC_TIME=\"zh_CN\"\nLC_MONETARY=\"zh_CN\"\nLC_PAPER=\"zh_CN\"\nLC_NAME=\"zh_CN\"\nLC_ADDRESS=\"zh_CN\"\nLC_TELEPHONE=\"zh_CN\"\nLC_MEASUREMENT=\"zh_CN\"\nLC_IDENTIFICATION=\"zh_CN\"\nLC_ALL=\"zh_CN.UTF-8\"" > /etc/default/locale && \
     echo -e "LANG=\"zh_CN.UTF-8\"\nLANGUAGE=\"zh_CN:zh\"\nLC_NUMERIC=\"zh_CN\"\nLC_TIME=\"zh_CN\"\nLC_MONETARY=\"zh_CN\"\nLC_PAPER=\"zh_CN\"\nLC_NAME=\"zh_CN\"\nLC_ADDRESS=\"zh_CN\"\nLC_TELEPHONE=\"zh_CN\"\nLC_MEASUREMENT=\"zh_CN\"\nLC_IDENTIFICATION=\"zh_CN\"\nLC_ALL=\"zh_CN.UTF-8\"" > /etc/environment
@@ -40,6 +45,9 @@ COPY ./start.sh /
 
 # 暴露端口
 EXPOSE 2536/tcp
+
+# 设置工作目录为 /Yunzai
+WORKDIR /Yunzai
 
 # 指定容器启动时执行的命令
 CMD ["/bin/bash", "/start.sh"]
