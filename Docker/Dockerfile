@@ -23,7 +23,7 @@ RUN sed -i 's@http://deb.debian.org/@http://mirrors.aliyun.com/@g' /etc/apt/sour
 
 # 安装其他依赖
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends fonts-wqy-microhei xfonts-utils chromium fontconfig libxss1 libgl1 vim jq python3-pip python3-dev redis-server procps && \
+    apt-get install -y --no-install-recommends fonts-wqy-microhei xfonts-utils chromium fontconfig libxss1 libgl1 vim jq python3-pip python3-dev redis-server procps ffmpeg && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
