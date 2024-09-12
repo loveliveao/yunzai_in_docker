@@ -33,12 +33,7 @@ DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_unraid
 > - 若使用`bridge`网络，造成本项目与`Lagrange`、`NapCatQQ`等容器IP不一致，需手动将`/Yunzai/config/config/bot.yaml`中的`localhost`替换为容器IP
 
 ### 安装 Lagrange
-
-本文提供两种方法安装 Lagrange
-
-1. 通过 Unraid WEBUI Docker 选项卡中`添加容器`方式安装Lagrange（适用Unraid中高手），详见官方[使用指南](https://github.com/LagrangeDev/Lagrange.Core/blob/master/Docker_zh.md?plain=1)
-
-2. 通过导入本人Xml文件进行安装（适用Unraid低手或懒人）
+请见
 
 
 ### 安装Yunzai_in_Unraid
@@ -52,12 +47,12 @@ DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_unraid
 
 > [!IMPORTANT]
 >   
-> - 首次运行时间可能较长，可能由于以下两种原因：
->
->   - 您的网络不通畅
+> - 首次运行时间可能较长，请耐心等待：
 >
 >   - 正在克隆`TRSS-Yunzai`、`miao-plugin`、`Yunzai-genshin`、`guoba-plugin`、`rconsole-plugin`
 >
+>   - 您的网络不通畅，请检查日志文件是否提示错误。
+>   - 
 ```bash
 
 ```
