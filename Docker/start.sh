@@ -1,33 +1,35 @@
 #!/bin/bash
 
-# 定义颜色代码以美化输出信息
+# 定义颜色代码
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # 无颜色
 
-# 函数：输出带颜色的消息
+# 输出带颜色的消息
 print_message() {
     local color=$1
     local message=$2
     echo -e "${color}${message}${NC}"
 }
 
-# 提示用户脚本正在初始化
-print_message "$RED" "正在初始化 Yunzai，请勿退出..."
+# 脚本开始
+print_message "$YELLOW" "=== Yunzai 初始化脚本开始 ==="
 
-# 启动 Redis 服务器
-print_message "$GREEN" "启动 Redis 服务器..."
+# 步骤 1: 启动 Redis 服务器
+print_message "$GREEN" "步骤 1: 启动 Redis 服务器"
 redis-server --daemonize yes &> /dev/null
+print_message "$GREEN" "Redis 服务器已启动"
 
-# 检查 Yunzai 目录是否存在且不为空
-print_message "$RED" "正在检查 Yunzai 目录是否存在且不为空..."
-if [ ! -d "/Yunzai" ] || [ -z "$(ls -A /Yunzai)" ]; then
-    print_message "$GREEN" "Yunzai 目录不存在或为空，正在克隆 Yunzai ..."
+# 步骤 2: 检查并初始化 Yunzai
+print_message "$GREEN" "步骤 2: 检查 Yunzai 目录"
+if [ -z "$(ls -A /Yunzai)" ]; then
+    print_message "$YELLOW" "Yunzai 目录为空，开始初始化..."
 
     # 克隆 Yunzai
     git clone https://gitee.com/TimeRainStarSky/Yunzai /Yunzai
-    print_message "$GREEN" "Yunzai 克隆完成。"
-    cd /Yunzai || exit
+    cd /Yunzai
+    print_message "$GREEN" "Yunzai 克隆完成"
 
     # 克隆插件
     print_message "$GREEN" "正在克隆插件..."
@@ -35,26 +37,64 @@ if [ ! -d "/Yunzai" ] || [ -z "$(ls -A /Yunzai)" ]; then
     git clone --depth 1 https://gitee.com/TimeRainStarSky/Yunzai-genshin.git plugins/genshin
     git clone --depth 1 https://gitee.com/guoba-yunzai/guoba-plugin.git plugins/Guoba-Plugin
     git clone --depth 1 https://gitee.com/kyrzy0416/rconsole-plugin.git plugins/rconsole-plugin
+    print_message "$GREEN" "插件克隆完成"
 
     # 安装依赖
-    print_message "$GREEN" "正在安装 Node.js 依赖..."
+    print_message "$YELLOW" "安装 Node.js 依赖..."
     npm --registry=https://registry.npmmirror.com install pnpm -g
     pnpm config set registry https://registry.npmmirror.com
     pnpm install -P
-    print_message "$GREEN" "Node.js 依赖安装完成。"
+    print_message "$GREEN" "Node.js 依赖安装完成"
 
-    print_message "$GREEN" "正在安装全局 Freyr 工具..."
+    print_message "$YELLOW" "安装全局 Freyr 工具..."
     npm install -g freyr
-    print_message "$GREEN" "Freyr 安装完成。"
+    npm install -g binary-version-check@latest formidable@latest resolve-url@latest superagent@latest
+    npm update -g freyr
+    print_message "$GREEN" "Freyr 及其依赖安装完成"
 
-    print_message "$GREEN" "正在安装 Python 依赖 yt-dlp..."
+    print_message "$YELLOW" "安装 Python 依赖 yt-dlp..."
     pip3 install yt-dlp
-    print_message "$GREEN" "Python 依赖安装完成。"
+    print_message "$GREEN" "Python 依赖安装完成"
+
+    # 首次启动 Yunzai 以生成配置文件
+    print_message "$YELLOW" "首次启动 Yunzai 以生成配置文件..."
+    pm2 start app.js --name "yunzai" --max-memory-restart 1G
+    sleep 10
+    pm2 stop yunzai
+    print_message "$GREEN" "配置文件生成完成"
+
+    # 修改 bot.yaml 配置
+    if [ -f "/Yunzai/config/config/bot.yaml" ]; then
+        print_message "$YELLOW" "修改 bot.yaml 配置..."
+        sed -i 's/localhost/0.0.0.0/g' /Yunzai/config/config/bot.yaml
+        print_message "$GREEN" "bot.yaml 配置修改完成"
+    else
+        print_message "$RED" "未找到 bot.yaml 文件，请检查 Yunzai 是否正确初始化"
+    fi
 else
-    print_message "$RED" "Yunzai 目录已存在且不为空，将跳过克隆和安装依赖步骤..."
-    cd /Yunzai || exit
+    print_message "$GREEN" "Yunzai 目录不为空，跳过初始化步骤"
+    cd /Yunzai
+
+    # 更新依赖
+    print_message "$YELLOW" "更新 Node.js 依赖..."
+    pnpm install -P
+    print_message "$GREEN" "Node.js 依赖更新完成"
+
+    print_message "$YELLOW" "更新 Freyr 及其依赖..."
+    npm install -g binary-version-check@latest formidable@latest resolve-url@latest superagent@latest
+    npm update -g freyr
+    print_message "$GREEN" "Freyr 及其依赖更新完成"
 fi
 
-# 启动 Yunzai 并在前台运行
-print_message "$RED" "即将启动 Yunzai..."
-node .
+# 步骤 3: 启动 Yunzai
+print_message "$GREEN" "步骤 3: 启动 Yunzai"
+print_message "$YELLOW" "使用 pm2 启动 Yunzai..."
+pm2 restart yunzai || pm2 start app.js --name "yunzai" --max-memory-restart 1G
+print_message "$GREEN" "Yunzai 启动完成"
+
+# 脚本结束
+print_message "$YELLOW" "=== Yunzai 初始化脚本结束 ==="
+
+# 显示 pm2 日志
+print_message "$GREEN" "正在显示 pm2 日志..."
+pm2 logs

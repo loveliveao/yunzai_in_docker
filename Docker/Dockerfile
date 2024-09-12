@@ -40,6 +40,9 @@ RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
 RUN npm --registry=https://registry.npmmirror.com install pnpm -g && \
     pnpm config set registry https://registry.npmmirror.com
 
+# 安装 pm2
+RUN npm install -g pm2
+
 # 复制启动脚本到容器
 COPY ./start.sh /
 
