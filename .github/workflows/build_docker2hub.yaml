@@ -1,10 +1,8 @@
 name: build_docker
 
 on:
-  push:
-    branches: [ main ]  # 你可以指定特定的分支，或者使用 '*' 来表示所有分支
   release:
-    types: [created]
+    types: [created]  # 仅在创建新的发布时触发
 
 jobs:
   build_docker:
@@ -28,9 +26,7 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          # 从 GITHUB_REPOSITORY 环境变量中提取仓库名称部分
           REPOSITORY_NAME_PART=$(echo ${GITHUB_REPOSITORY} | cut -d '/' -f 2)
-          # 生成日期时间字符串，格式为 YYMMDDHHMM
           BUILD_TAG=$(date +'%y%m%d%H%M')
           echo "REPOSITORY_NAME_PART=$REPOSITORY_NAME_PART" >> $GITHUB_ENV
           echo "BUILD_TAG=$BUILD_TAG" >> $GITHUB_ENV
@@ -54,5 +50,5 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/yunzai_in_unraid:${{ env.BUILD_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/yunzai_in_unraid:${{ github.event.release.tag_name }}
             ${{ secrets.DOCKERHUB_USERNAME }}/yunzai_in_unraid:latest
