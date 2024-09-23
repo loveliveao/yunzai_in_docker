@@ -1,8 +1,8 @@
 <div align="center">
   
-# 🐋Yunzai_in_Unraid📦
+# 🐋Yunzai_AIO📦
 
-**在Unraid上优雅地通过docker使用Trss-Yunzai!!!**
+**整合NapCat使用Trss-Yunzai!**
 
 DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_unraid
 

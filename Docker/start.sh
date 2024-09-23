@@ -14,7 +14,7 @@ print_message() {
 }
 
 # 脚本开始
-print_message "$YELLOW" "=== Yunzai 初始化脚本开始 ==="
+print_message "$YELLOW" "=== 初始化脚本开始 ==="
 
 # 步骤 1: 启动 Redis 服务器
 print_message "$GREEN" "步骤 1: 启动 Redis 服务器"
@@ -31,7 +31,7 @@ if [ -z "$(ls -A /Yunzai)" ]; then
     cd /Yunzai
     print_message "$GREEN" "Yunzai 克隆完成"
 
-    # 克隆插件
+    # 克隆插件（已注释）
     print_message "$GREEN" "正在克隆插件..."
     git clone --depth 1 https://gitee.com/yoimiya-kokomi/miao-plugin plugins/miao-plugin
     git clone --depth 1 https://gitee.com/TimeRainStarSky/Yunzai-genshin.git plugins/genshin
@@ -86,14 +86,45 @@ else
     print_message "$GREEN" "Freyr 及其依赖更新完成"
 fi
 
-# 步骤 3: 启动 Yunzai
-print_message "$GREEN" "步骤 3: 启动 Yunzai"
+# 步骤 3: 初始化 NapCat
+print_message "$GREEN" "步骤 3: 初始化 NapCat"
+if [ ! -f "/NapCat/.installed" ]; then
+    print_message "$YELLOW" "创建 NapCat 目录并开始安装..."
+    mkdir -p /NapCat
+    cd /NapCat
+    curl -o napcat.sh https://nclatest.znin.net/NapNeko/NapCat-Installer/main/script/install.sh
+    yes "n" | sudo bash napcat.sh
+    touch /NapCat/.installed
+    print_message "$GREEN" "NapCat 安装完成"
+else
+    print_message "$GREEN" "NapCat 已安装，跳过安装步骤"
+fi
+
+# 检查 xvfb 和 xauth 是否正确安装
+print_message "$YELLOW" "检查 xvfb 和 xauth 是否正确安装..."
+if ! command -v xvfb-run &> /dev/null; then
+    print_message "$RED" "xvfb-run 未找到，请确保已正确安装 xvfb"
+    exit 1
+fi
+if ! command -v xauth &> /dev/null; then
+    print_message "$RED" "xauth 未找到，请确保已正确安装 xauth"
+    exit 1
+fi
+print_message "$GREEN" "xvfb 和 xauth 检查通过"
+
+# 使用 pm2 启动 NapCat
+print_message "$YELLOW" "使用 pm2 启动 NapCat..."
+pm2 start "xvfb-run -a qq --no-sandbox -q $QQ_NUMBER" --name "napcat" --interpreter none
+print_message "$GREEN" "NapCat 启动完成，使用 QQ 号码: $QQ_NUMBER"
+
+# 步骤 4: 启动 Yunzai
+print_message "$GREEN" "步骤 4: 启动 Yunzai"
 print_message "$YELLOW" "使用 pm2 启动 Yunzai..."
 pm2 restart yunzai || pm2 start app.js --name "yunzai" --max-memory-restart 1G
 print_message "$GREEN" "Yunzai 启动完成"
 
 # 脚本结束
-print_message "$YELLOW" "=== Yunzai 初始化脚本结束 ==="
+print_message "$YELLOW" "=== 初始化脚本结束 ==="
 
 # 显示 pm2 日志
 print_message "$GREEN" "正在显示 pm2 日志..."

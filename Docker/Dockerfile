@@ -9,6 +9,7 @@ ENV TZ=Asia/Shanghai
 # 设置 Puppeteer 环境变量
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV QQ_NUMBER=your_default_qq_number
 
 # 设置工作目录为 /Yunzai
 WORKDIR /Yunzai
@@ -17,7 +18,7 @@ WORKDIR /Yunzai
 RUN sed -i 's@http://deb.debian.org/@http://mirrors.aliyun.com/@g' /etc/apt/sources.list && \
     sed -i 's@http://security.debian.org/@http://mirrors.aliyun.com/@g' /etc/apt/sources.list && \
     apt-get update -y && \
-    apt-get install -y --no-install-recommends wget xz-utils dos2unix curl gnupg git && \
+    apt-get install -y --no-install-recommends wget xz-utils dos2unix sudo curl gnupg git xvfb xauth && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
