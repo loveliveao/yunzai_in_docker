@@ -1,10 +1,10 @@
 <div align="center">
   
-# 🐋Yunzai_in_Unraid📦
+# ☁️Yunzai_in_Docker🐋
 
 **在Unraid上优雅地通过docker使用Trss-Yunzai!!!**
 
-DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_unraid
+DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_docker
 
 </div>
 
@@ -16,7 +16,7 @@ DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_unraid
 - 支持配置文件持久化，只需挂载`/Yunzai`文件夹即可
 - 方便的插件安装体验，仅需复制插件安装脚本到控制台即可轻松安装插件
 - 重要依赖安装较全，提供`FFmpeg`、`chromium`依赖
-- 对Unraid系统支持友好，可在`应用`中搜索`loveliveao/yunzai_in_unraid`，通过DockerHub安装本项目，且提供icon
+- 对Unraid系统支持友好，可在`应用`中搜索`loveliveao/yunzai_in_docker`，通过DockerHub安装本项目，且提供icon
 - 开箱即用的[R插件](https://github.com/zhiyu1998/rconsole-plugin) 体验
 
 
@@ -36,7 +36,7 @@ DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_unraid
 请见
 
 
-### 安装Yunzai_in_Unraid
+### 安装Yunzai_in_docker
 
 1. 打开您的Unriad WEBUI，格式通常如下`http://[IP]:[PORT]`，如`http://10.0.0.10:80`
 
