@@ -3,10 +3,7 @@ name: build_docker
 on:
   release:
     types: [created]  # 仅在创建新的发布时触发
-  push:
-    branches:
-      - main
-      - AIO
+    
 jobs:
   build_docker:
     name: Build docker
