@@ -6,9 +6,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # 设置时区为中国上海
 ENV TZ=Asia/Shanghai
-# 设置 Puppeteer 环境变量
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # 设置工作目录为 /Yunzai
 WORKDIR /Yunzai

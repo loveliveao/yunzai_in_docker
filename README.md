@@ -8,7 +8,6 @@ DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_docker
 
 </div>
 
-[![Core](https://img.shields.io/badge/Lagrange-Core-blue)](#)
 
 ## 👍项目特性
 

@@ -36,7 +36,7 @@ if [ -z "$(ls -A /Yunzai)" ]; then
     git clone --depth 1 https://gitee.com/yoimiya-kokomi/miao-plugin plugins/miao-plugin
     git clone --depth 1 https://gitee.com/TimeRainStarSky/Yunzai-genshin.git plugins/genshin
     git clone --depth 1 https://gitee.com/guoba-yunzai/guoba-plugin.git plugins/Guoba-Plugin
-    git clone --depth 1 https://gitee.com/kyrzy0416/rconsole-plugin.git plugins/rconsole-plugin
+    # git clone --depth 1 https://gitee.com/kyrzy0416/rconsole-plugin.git plugins/rconsole-plugin
     print_message "$GREEN" "插件克隆完成"
 
     # 安装依赖
@@ -80,10 +80,6 @@ else
     pnpm install -P
     print_message "$GREEN" "Node.js 依赖更新完成"
 
-    print_message "$YELLOW" "更新 Freyr 及其依赖..."
-    npm install -g binary-version-check@latest formidable@latest resolve-url@latest superagent@latest
-    npm update -g freyr
-    print_message "$GREEN" "Freyr 及其依赖更新完成"
 fi
 
 # 步骤 3: 启动 Yunzai
@@ -96,5 +92,5 @@ print_message "$GREEN" "Yunzai 启动完成"
 print_message "$YELLOW" "=== Yunzai 初始化脚本结束 ==="
 
 # 显示 pm2 日志
-print_message "$GREEN" "正在显示 pm2 日志..."
+print_message "$GREEN" "正在显示 pm2 日志...如需重启yunzai，请使用 pm2 restart yunzai 命令"
 pm2 logs
