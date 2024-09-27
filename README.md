@@ -18,6 +18,11 @@ DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_docker
 - 使用[pm2](https://pm2.io/)进行进程管理，重启yunzai更优雅，[使用方法见此](#使用pm2控制yunzai进程)
 - 对Unraid系统支持友好，通过Docker部署 `loveliveao/yunzai_in_docker`，提供[图标链接地址](https://github.com/loveliveao/yunzai_in_docker/tree/main/icons)
 
+> [!NOTE]
+> - `2536端口` 用于 `反向WebSocket` 和 `锅巴插件` 默认登录端口
+> - `/Yunzai` 目录 被用于存储 `TRSS-Yunzai` 运行时的文件，可直接映射
+> - 自动将 `TRSS-Yunzai` 的 `反向WebSocket` 监听地址修改为 `0.0.0.0`，通过docker使用更灵活
+
 ## ✈部署阶段
 
 推荐使用 [Lagrange](https://github.com/LagrangeDev/Lagrange.Core) 或 [NapCatQQ](https://github.com/NapNeko/NapCatQQ) 作为 **协议端** 通过`反向WebSocket`连接到本项目。
@@ -49,11 +54,6 @@ DockerHub地址：https://hub.docker.com/r/loveliveao/yunzai_in_docker
 4. 固定此容器的ip地址，并修改Lagrange或NapCatQQ配置中的反向WebSocket
 
 </details>
-
-> [!NOTE]
-> - `2536端口` 用于 `反向WebSocket` 和 `锅巴插件` 默认登录端口
-> - `/Yunzai` 目录 被用于存储TRSS-Yunzai运行时的文件，可直接映射
-> - 自动将 `TRSS-Yunzai` 的 `反向WebSocket` 监听地址修改为 `0.0.0.0`，多docker配置更方便
 
 ## 🛫使用阶段
 
